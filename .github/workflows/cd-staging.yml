@@ -1,0 +1,53 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [ "staging" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+      
+    - name: Build JAR
+      run: ./gradlew clean build -x test
+      
+    - name: Build Docker Image
+      run: docker build -t erp-core:staging .
+      
+    # Example Step: Push to Docker Hub (Uncomment and configure secrets)
+    # - name: Login to Docker Hub
+    #   uses: docker/login-action@v3
+    #   with:
+    #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+    #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+    # - name: Push Docker Image
+    #   run: |
+    #     docker tag erp-core:staging ${{ secrets.DOCKERHUB_USERNAME }}/erp-core:staging
+    #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/erp-core:staging
+        
+    # Example Step: Deploy via SSH (Uncomment and configure secrets)
+    # - name: Deploy to Staging Server
+    #   uses: appleboy/ssh-action@master
+    #   with:
+    #     host: ${{ secrets.STAGING_HOST }}
+    #     username: ${{ secrets.STAGING_USERNAME }}
+    #     key: ${{ secrets.STAGING_SSH_KEY }}
+    #     script: |
+    #       docker pull ${{ secrets.DOCKERHUB_USERNAME }}/erp-core:staging
+    #       docker stop erp-core-staging || true
+    #       docker rm erp-core-staging || true
+    #       docker run -d -p 8081:8080 --name erp-core-staging \
+    #         -e SPRING_PROFILES_ACTIVE=staging \
+    #         ${{ secrets.DOCKERHUB_USERNAME }}/erp-core:staging
