@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: erp-core
+  profiles:
+    active: dev # Default profile
+  
+  # Common configurations can go here
+  main:
+    allow-bean-definition-overriding: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
