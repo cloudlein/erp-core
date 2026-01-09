@@ -33,50 +33,33 @@ src/main/java/com/learn/erp_core/
 
 ---
 
-## Per-Module Structure Details
+## Per-Module Structure Details (Example: Auth Module)
 
-Each module (e.g., `catalog`) MUST follow this strict Hexagonal layer structure:
+Each module (e.g., `auth`) MUST follow this strict Hexagonal layer structure:
 
 ```text
-com.learn.erp_core.catalog/
+com.learn.erp_core.auth/
 ├── domain/                     # LAYER 1: THE CORE (Pure Java, No Spring)
 │   ├── model/                  # Aggregate Root, Entities, Value Objects
-│   │   ├── Product.java
-│   │   └── ProductId.java
 │   ├── repository/             # Output Port (Interface Only)
-│   │   └── ProductRepository.java
 │   ├── service/                # Domain Service (Complex business logic)
-│   │   └── ProductPricingService.java
 │   └── event/                  # Domain Events
-│       └── ProductCreatedEvent.java
 │
 ├── application/                # LAYER 2: ORCHESTRATION (Use Cases)
 │   ├── port/                   # Input Port (Interface for Primary Adapter)
 │   │   └── in/
-│   │       ├── CreateProductUseCase.java
-│   │       └── GetProductUseCase.java
-│   ├── service/                # Use Case Implementation
-│   │   └── ProductApplicationService.java
-│   └── dto/                    # Data Transfer Objects (Request/Response)
-│       ├── CreateProductCommand.java
-│       └── ProductResponse.java
+│   ├── service/                # Use Case Implementation (Application Services)
+│   ├── dto/                    # Data Transfer Objects (Command/Response)
+│   └── usecase/                # Explicit Use Case definitions (optional but recommended)
 │
 └── adapter/                    # LAYER 3: INFRASTRUCTURE (Framework & IO)
     ├── in/                     # Primary Adapter (Inbound)
-    │   ├── web/                # REST API Controller
-    │   │   └── ProductController.java
+    │   ├── web/                # REST API Controller (e.g., AuthController)
     │   └── listener/           # Event Listener (Kafka/RabbitMQ/SpringEvent)
-    │       └── StockLowListener.java
     │
     └── out/                    # Secondary Adapter (Outbound)
-        ├── persistence/        # Database Implementation
-        │   ├── ProductJpaEntity.java      # @Entity (Hibernate)
-        │   ├── ProductJpaRepository.java  # Spring Data JPA Interface
-        │   ├── ProductPersistenceAdapter.java # Implements Domain Repository
-        │   └── ProductMapper.java         # Mapping Domain <-> Entity
-        │
-        └── external/           # External System (e.g., Payment Gateway)
-            └── ThirdPartyCatalogClient.java
+        ├── persistence/        # Database Implementation (User, Role tables)
+        └── security/           # Integration with Spring Security, JWT, Password Encoder
 ```
 
 ---

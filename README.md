@@ -2,7 +2,7 @@
 
 ## Overview
 
-Enterprise ERP Core is a robust, modular, and scalable Enterprise Resource Planning system built with **Spring Boot 3** and **Java 21**. It adopts **Modular Monolith Architecture** combined with **Domain-Driven Design (DDD)** and **Hexagonal Architecture** (Ports and Adapters) to ensure maintainability, testability, and loose coupling between business logic and infrastructure.
+Enterprise ERP Core is a robust, modular, and scalable Enterprise Resource Planning system built with **Spring Boot 3** and **Java 17+**. It adopts **Modular Monolith Architecture** combined with **Domain-Driven Design (DDD)** and **Hexagonal Architecture** (Ports and Adapters) to ensure maintainability, testability, and loose coupling between business logic and infrastructure.
 
 This project is designed to be **production-ready**, incorporating advanced patterns such as Event-Driven Architecture, Async Processing, and comprehensive Observability (Logging, Metrics, Tracing).
 
@@ -21,8 +21,8 @@ This project is designed to be **production-ready**, incorporating advanced patt
 
 ## Technology Stack
 
-- **Language**: Java 17+
-- **Framework**: Spring Boot 3.x
+*   **Language**: Java 21
+*   **Framework**: Spring Boot 3.x
 - **Database**: PostgreSQL
 - **Persistence**: Spring Data JPA (Hibernate)
 - **Build Tool**: Gradle

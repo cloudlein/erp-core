@@ -14,6 +14,20 @@ This document contains database table specifications and Java Entity (JPA) mappi
 
 ---
 
+## Design Principles (for Learning)
+
+1. Normalize data to at least 3rd Normal Form (3NF) but keep it practical.
+2. Use surrogate keys (`BIGINT` + Auto Increment) for most PKs.
+3. Use `VARCHAR` for enums (store the enum name, not integer code).
+4. Use `DECIMAL(19,4)` + `BigDecimal` for money.
+5. Use audit columns (`created_at`, `updated_at`, etc.) in most business tables.
+6. Use soft delete (`active` flag) only where it makes sense (Users, Products).
+7. Add indexes on columns that are frequently searched or used as FK.
+
+---
+
+---
+
 ## Base Entity (MappedSuperclass)
 
 Every table (except `many-to-many` join tables) must have audit columns. In Java, create a `BaseEntity` class extended by other entities.
@@ -61,6 +75,35 @@ Handles users, roles, and permissions.
 - `users` ↔ `roles` (Many-to-Many): Table `user_roles`
 - `roles` ↔ `permissions` (Many-to-Many): Table `role_permissions`
 
+#### Table: `user_roles`
+
+| Column    | SQL Type | Java Type | Constraints                   | Note                              |
+| :-------- | :------- | :-------- | :---------------------------- | :-------------------------------- |
+| `user_id` | BIGINT   | `Long`    | PK (composite), FK (users.id) | One user can have many roles      |
+| `role_id` | BIGINT   | `Long`    | PK (composite), FK (roles.id) | One role can be assigned to users |
+
+Recommended:
+
+- Composite PK: `PRIMARY KEY (user_id, role_id)`
+- Index: index on `role_id` for reverse lookup (find all users by role).
+
+#### Table: `role_permissions`
+
+| Column          | SQL Type | Java Type | Constraints                         | Note                               |
+| :-------------- | :------- | :-------- | :---------------------------------- | :--------------------------------- |
+| `role_id`       | BIGINT   | `Long`    | PK (composite), FK (roles.id)       | One role can have many permissions |
+| `permission_id` | BIGINT   | `Long`    | PK (composite), FK (permissions.id) | One permission can belong to roles |
+
+Recommended:
+
+- Composite PK: `PRIMARY KEY (role_id, permission_id)`
+- Index: index on `permission_id` for reverse lookup (find all roles by permission).
+
+#### Enum Strategy (Auth)
+
+- `roles.name`: store string like `ROLE_ADMIN`, `ROLE_USER`.
+- `permissions.name`: store string like `PRODUCT_READ`, `ORDER_CREATE`.
+
 ---
 
 ## 2. Module: Catalog (`com.learn.erp_core.catalog`)
@@ -89,6 +132,12 @@ Product and category module.
 | `category_id` | BIGINT        | `Long`       | FK (categories) |                           |
 | `active`      | BOOLEAN       | `Boolean`    | Default True    |                           |
 
+Recommended constraints and indexes:
+
+- `UK_products_sku` on `sku`.
+- Index on `category_id` to speed up filtering by category.
+- If search by name is common, consider index on `name` (partial or full text depending on DB).
+
 ---
 
 ## 3. Module: Inventory (`com.learn.erp_core.inventory`)
@@ -113,6 +162,12 @@ Warehouse stock module.
 | `warehouse_id`      | BIGINT   | `Long`    | FK (warehouses) |                             |
 | `quantity_on_hand`  | INTEGER  | `Integer` | Not Null        | Physical stock in warehouse |
 | `quantity_reserved` | INTEGER  | `Integer` | Not Null        | Stock reserved for orders   |
+
+Recommended:
+
+- Ensure there is only one stock row per product per warehouse:
+  - `UNIQUE(product_id, warehouse_id)`
+- Index on `(product_id, warehouse_id)` for fast lookup.
 
 ### Table: `stock_mutations`
 
@@ -169,6 +224,12 @@ Sales and Purchase transactions. Table structures are similar.
 | `quantity`    | INTEGER       | `Integer`    | Not Null          |                                    |
 | `unit_price`  | DECIMAL(19,4) | `BigDecimal` | Not Null          | Price per item at transaction time |
 | `total_price` | DECIMAL(19,4) | `BigDecimal` | Not Null          | qty \* unit_price                  |
+
+Recommended:
+
+- To avoid duplicate item rows for same product in one order:
+  - `UNIQUE(order_id, product_id)`
+- Index on `product_id` for reporting and analytics.
 
 ---
 
