@@ -1,4 +1,4 @@
-package com.learn.erp_core.auth.adapter.out.persistance.entity;
+package com.learn.erp_core.auth.adapter.out.persistence.entity;
 
 import com.learn.erp_core.shared.domain.BaseEntity;
 import jakarta.persistence.Column;
@@ -24,3 +24,4 @@ public class PermissionEntity extends BaseEntity {
     @ManyToMany(mappedBy = "permissions")
     private Set<RoleEntity> roles;
 }
+

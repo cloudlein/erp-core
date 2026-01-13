@@ -1,4 +1,4 @@
-package com.learn.erp_core.auth.adapter.out.persistance.entity;
+package com.learn.erp_core.auth.adapter.out.persistence.entity;
 
 import com.learn.erp_core.shared.domain.BaseEntity;
 import jakarta.persistence.*;
@@ -35,3 +35,4 @@ public class UserEntity extends BaseEntity {
     )
     private Set<RoleEntity> roles;
 }
+
