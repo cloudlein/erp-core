@@ -1,5 +1,5 @@
 package com.learn.erp_core.auth.adapter.out.persistence.mapper;
 
-public class PermissionMapper {
+public interface PermissionMapper {
 }
 

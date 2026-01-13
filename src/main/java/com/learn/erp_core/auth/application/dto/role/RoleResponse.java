@@ -1,7 +1,5 @@
 package com.learn.erp_core.auth.application.dto.role;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
