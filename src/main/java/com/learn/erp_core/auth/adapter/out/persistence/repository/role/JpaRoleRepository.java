@@ -1,7 +1,6 @@
-package com.learn.erp_core.auth.adapter.out.persistence.repository;
+package com.learn.erp_core.auth.adapter.out.persistence.repository.role;
 
 import com.learn.erp_core.auth.adapter.out.persistence.entity.RoleEntity;
-import com.learn.erp_core.auth.domain.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

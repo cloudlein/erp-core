@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder(toBuilder = true)
 public class User {
 
     private Long id;

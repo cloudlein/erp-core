@@ -1,25 +1,27 @@
-package com.learn.erp_core.auth.adapter.out.persistence;
+package com.learn.erp_core.auth.adapter.out.persistence.repository.user;
 
 import com.learn.erp_core.auth.adapter.out.persistence.entity.RoleEntity;
 import com.learn.erp_core.auth.adapter.out.persistence.entity.UserEntity;
 import com.learn.erp_core.auth.adapter.out.persistence.mapper.UserMapper;
-import com.learn.erp_core.auth.adapter.out.persistence.repository.JpaRoleRepository;
-import com.learn.erp_core.auth.adapter.out.persistence.repository.JpaUserRepository;
+import com.learn.erp_core.auth.adapter.out.persistence.repository.role.JpaRoleRepository;
 import com.learn.erp_core.auth.domain.model.Role;
 import com.learn.erp_core.auth.domain.model.User;
 import com.learn.erp_core.auth.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryAdapter implements UserRepository {
+public class UserRepositoryImpl implements UserRepository {
 
     private final JpaUserRepository jpaUserRepository;
     private final JpaRoleRepository jpaRoleRepository;
@@ -28,7 +30,6 @@ public class UserRepositoryAdapter implements UserRepository {
     @Transactional
     @Override
     public User save(User user) {
-        // 1. Convert Domain to Entity
         UserEntity userEntity = userMapper.toEntity(user);
 
         if (user.getRoles() != null && !user.getRoles().isEmpty()) {
@@ -66,6 +67,33 @@ public class UserRepositoryAdapter implements UserRepository {
     @Override
     public Boolean existsByEmail(String email) {
         return jpaUserRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findByUserId(Long userId) {
+        return jpaUserRepository.findById(userId)
+                .map(userMapper::toDomain);
+    }
+
+    @Override
+    public Page<User> findAllUser(String search, Pageable pageable) {
+        Specification<UserEntity> spec = null;
+
+        if (StringUtils.hasText(search)){
+            String searchPattern = "%" + search.toLowerCase() + "%";
+            Specification<UserEntity> searchSpec = ((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("username")), searchPattern),
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), searchPattern)
+            ));
+
+            spec = spec == null ? searchSpec : spec.and(searchSpec);
+        }
+
+        Page<UserEntity> page = (spec == null)
+                ? jpaUserRepository.findAll(pageable)
+                : jpaUserRepository.findAll(spec, pageable);
+
+        return page.map(userMapper::toDomain);
     }
 }
 

@@ -1,7 +1,5 @@
 package com.learn.erp_core.auth.domain.model;
 
-import com.learn.erp_core.auth.adapter.out.persistance.entity.PermissionEntity;
-import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,11 +12,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {
-
     private Long id;
     private String name;
     private String description;
     private Set<Permission> permissions;
-
-
 }

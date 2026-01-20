@@ -30,4 +30,7 @@ public class CreateUserRequest {
     @NotNull(message = "Role cannot be empty")
     @Size(min = 1, message = "A role must have at least 1")
     private Set<String> roles;
+
+    private Boolean isActive;
+
 }
