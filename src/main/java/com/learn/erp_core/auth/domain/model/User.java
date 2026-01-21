@@ -1,9 +1,6 @@
 package com.learn.erp_core.auth.domain.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -19,4 +16,10 @@ public class User {
     private String passwordHash;
     private Boolean isActive;
     private Set<Role> roles;
+
+
+    public void deactivate() {
+        this.isActive = false;
+    }
+
 }

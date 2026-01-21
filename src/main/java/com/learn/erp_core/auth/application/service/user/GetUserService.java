@@ -29,9 +29,8 @@ public class GetUserService implements GetUserUseCase {
     @Override
     public List<UserResponse> getAllUser(String search, Pageable pageable) {
         Page<User> users = userRepository.findAllUser(search, pageable);
-        List<UserResponse> responses = users.getContent().stream()
+        return users.getContent().stream()
                 .map(userMapper::toResponse)
                 .toList();
-        return responses;
     }
 }
