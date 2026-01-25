@@ -3,8 +3,6 @@ package com.learn.erp_core.user.application.service.user;
 import com.learn.erp_core.user.application.dto.user.CreateUserRequest;
 import com.learn.erp_core.user.application.dto.user.UserResponse;
 import com.learn.erp_core.user.application.port.in.user.CreateUserUseCase;
-import com.learn.erp_core.user.application.port.out.EventPublisher;
-import com.learn.erp_core.user.domain.event.UserRegisteredEvent;
 import com.learn.erp_core.user.domain.model.User;
 import com.learn.erp_core.user.domain.repository.UserRepository;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.UserMapper;
@@ -17,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateUserService implements CreateUserUseCase {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
-    private final EventPublisher eventPublisher;
 
     @Transactional
     @Override
@@ -37,8 +34,6 @@ public class CreateUserService implements CreateUserUseCase {
                 .build();
         
         User savedUser = userRepository.save(user);
-        
-        eventPublisher.publish(new UserRegisteredEvent(savedUser.getId(), savedUser.getEmail()));
         
         return userMapper.toResponse(savedUser);
     }
