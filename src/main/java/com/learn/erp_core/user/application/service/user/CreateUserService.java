@@ -26,15 +26,8 @@ public class CreateUserService implements CreateUserUseCase {
              throw new IllegalArgumentException("Email already exists");
         }
 
-        User user = User.builder()
-                .username(request.getUsername())
-                .email(request.getEmail())
-                .passwordHash(request.getPassword()) 
-                .isActive(true)
-                .build();
-        
+        User user = userMapper.toDomain(request);
         User savedUser = userRepository.save(user);
-        
         return userMapper.toResponse(savedUser);
     }
 }

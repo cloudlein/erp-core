@@ -95,4 +95,14 @@ public class UserRepositoryImpl implements UserRepository {
 
         return page.map(userMapper::toDomain);
     }
+
+    @Override
+    public void delete(Long userId) {
+        jpaUserRepository.deleteById(userId);
+    }
+
+    @Override
+    public Boolean existsByUserId(Long userId) {
+        return jpaUserRepository.existsById(userId);
+    }
 }

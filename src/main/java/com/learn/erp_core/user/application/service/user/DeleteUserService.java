@@ -16,11 +16,9 @@ public class DeleteUserService implements DeleteUserUseCase {
     @Transactional
     @Override
     public void deleteUser(Long userId) {
-        User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id : " + userId));
-
-        user.deactivate();
-
-        userRepository.save(user);
+        if (!userRepository.existsByUserId(userId)){
+            throw new IllegalArgumentException("User with id: " + userId +" not found");
+        }
+        userRepository.delete(userId);
     }
 }
