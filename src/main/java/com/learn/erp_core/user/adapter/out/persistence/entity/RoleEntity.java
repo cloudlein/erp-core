@@ -1,5 +1,6 @@
 package com.learn.erp_core.user.adapter.out.persistence.entity;
 
+import com.learn.erp_core.shared.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,12 +13,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoleEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class RoleEntity extends BaseEntity {
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
     
     private String description;

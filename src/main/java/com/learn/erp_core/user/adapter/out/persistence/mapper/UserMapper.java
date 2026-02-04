@@ -16,5 +16,5 @@ public interface UserMapper {
     UserEntity toEntity(User domain);
     
     @Mapping(target = "roles", source = "roles", qualifiedByName = "mapRoleNames")
-    UserResponse toResponse(User domain);
+    UserResponse toResponse(User user);
 }

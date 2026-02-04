@@ -1,5 +1,6 @@
 package com.learn.erp_core.user.application.dto.role;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class UpdateRoleRequest {
 
+    @Size(min = 4, max = 50, message = "Role length must be between 4 and 50")
     private String name;
+
     private String description;
     private Set<String> permission;
 
