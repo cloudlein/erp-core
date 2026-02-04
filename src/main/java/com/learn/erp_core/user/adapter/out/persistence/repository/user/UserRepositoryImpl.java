@@ -12,7 +12,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.HashSet;
@@ -27,7 +26,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final JpaRoleRepository jpaRoleRepository;
     private final UserMapper userMapper;
 
-    @Transactional
+
     @Override
     public User save(User user) {
         UserEntity userEntity = userMapper.toEntity(user);
