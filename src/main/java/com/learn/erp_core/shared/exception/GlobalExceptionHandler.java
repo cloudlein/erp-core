@@ -2,6 +2,7 @@ package com.learn.erp_core.shared.exception;
 
 import com.learn.erp_core.shared.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -25,19 +27,42 @@ public class GlobalExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        
+        log.warn("Validation failed at {} with errors {}", request.getRequestURI(), errors);
         return new ResponseEntity<>(ApiResponse.error("Validation failed", errors, request.getRequestURI()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ApiResponse<Object>> handleBadRequestException(BadRequestException ex, HttpServletRequest request) {
+        log.warn("Bad request at {}: {}", request.getRequestURI(), ex.getMessage());
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), null, request.getRequestURI()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ResponseEntity<ApiResponse<Object>> handleConflictException(ConflictException ex, HttpServletRequest request) {
+        log.warn("Conflict at {}: {}", request.getRequestURI(), ex.getMessage());
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), null, request.getRequestURI()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ApiResponse<Object>> handleNotFoundException(NotFoundException ex, HttpServletRequest request) {
+        log.warn("Resource not found at {}: {}", request.getRequestURI(), ex.getMessage());
+        return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), null, request.getRequestURI()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ApiResponse<Object>> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest request) {
+        log.warn("Illegal argument at {}: {}", request.getRequestURI(), ex.getMessage());
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), null, request.getRequestURI()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<ApiResponse<Object>> handleAllExceptions(Exception ex, HttpServletRequest request) {
-        return new ResponseEntity<>(ApiResponse.error("An unexpected error occurred", ex.getMessage(), request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error("Unexpected error at {}", request.getRequestURI(), ex);
+        return new ResponseEntity<>(ApiResponse.error("An unexpected error occurred", null, request.getRequestURI()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

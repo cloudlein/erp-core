@@ -1,5 +1,6 @@
 package com.learn.erp_core.user.adapter.out.persistence.repository.user;
 
+import com.learn.erp_core.shared.exception.NotFoundException;
 import com.learn.erp_core.user.adapter.out.persistence.entity.RoleEntity;
 import com.learn.erp_core.user.adapter.out.persistence.entity.UserEntity;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.UserMapper;
@@ -8,6 +9,7 @@ import com.learn.erp_core.user.domain.model.Role;
 import com.learn.erp_core.user.domain.model.User;
 import com.learn.erp_core.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,6 +22,7 @@ import java.util.Set;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class UserRepositoryImpl implements UserRepository {
 
     private final JpaUserRepository jpaUserRepository;
@@ -35,7 +38,10 @@ public class UserRepositoryImpl implements UserRepository {
             Set<RoleEntity> managedRoles = new HashSet<>();
             for (Role role : user.getRoles()) {
                 RoleEntity roleEntity = jpaRoleRepository.findByName(role.getName())
-                        .orElseThrow(() -> new RuntimeException("Role not found: " + role.getName()));
+                        .orElseThrow(() -> {
+                            log.warn("Role not found with name {} when saving user {}", role.getName(), user.getUsername());
+                            return new NotFoundException("Role not found: " + role.getName());
+                        });
                 managedRoles.add(roleEntity);
             }
             userEntity.setRoles(managedRoles);
