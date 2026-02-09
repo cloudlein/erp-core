@@ -2,6 +2,7 @@ package com.learn.erp_core.user.application.service.permission;
 
 import com.learn.erp_core.shared.dto.OptionResponse;
 import com.learn.erp_core.shared.dto.PaginationResponse;
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.shared.util.PaginationAssembler;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.PermissionMapper;
 import com.learn.erp_core.user.application.dto.permission.PermissionResponse;
@@ -29,7 +30,7 @@ public class GetPermissionService implements GetPermissionUseCase {
     public PermissionResponse getPermissionById(Long permissionId) {
         return permissionRepository.findByPermissionId(permissionId)
                 .map(permissionMapper::toResponse)
-                .orElseThrow(() -> new IllegalArgumentException("Permission Not Found with id: " + permissionId));
+                .orElseThrow(() -> new ResourceNotFoundException("Permission Not Found with id: " + permissionId));
     }
 
     @Override

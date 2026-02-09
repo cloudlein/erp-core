@@ -1,6 +1,6 @@
 package com.learn.erp_core.user.adapter.out.persistence.repository.user;
 
-import com.learn.erp_core.shared.exception.NotFoundException;
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.adapter.out.persistence.entity.RoleEntity;
 import com.learn.erp_core.user.adapter.out.persistence.entity.UserEntity;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.UserMapper;
@@ -40,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
                 RoleEntity roleEntity = jpaRoleRepository.findByName(role.getName())
                         .orElseThrow(() -> {
                             log.warn("Role not found with name {} when saving user {}", role.getName(), user.getUsername());
-                            return new NotFoundException("Role not found: " + role.getName());
+                            return new ResourceNotFoundException("Role not found: " + role.getName());
                         });
                 managedRoles.add(roleEntity);
             }

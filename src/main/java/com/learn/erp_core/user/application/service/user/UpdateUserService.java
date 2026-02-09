@@ -1,7 +1,7 @@
 package com.learn.erp_core.user.application.service.user;
 
 import com.learn.erp_core.shared.exception.ConflictException;
-import com.learn.erp_core.shared.exception.NotFoundException;
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.UserMapper;
 import com.learn.erp_core.user.application.dto.user.UpdateUserRequest;
 import com.learn.erp_core.user.application.dto.user.UserResponse;
@@ -26,7 +26,7 @@ public class UpdateUserService implements UpdateUserUseCase {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> {
                     log.warn("User with id {} not found for update", userId);
-                    return new NotFoundException("User not found");
+                    return new ResourceNotFoundException("User not found");
                 });
 
         if (request.getEmail() != null && !request.getEmail().equals(user.getEmail())) {

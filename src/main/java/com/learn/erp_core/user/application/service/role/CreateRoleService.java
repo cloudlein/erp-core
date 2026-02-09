@@ -1,5 +1,6 @@
 package com.learn.erp_core.user.application.service.role;
 
+import com.learn.erp_core.shared.exception.ConflictException;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.RoleMapper;
 import com.learn.erp_core.user.application.dto.role.CreateRoleRequest;
 import com.learn.erp_core.user.application.dto.role.RoleResponse;
@@ -22,7 +23,7 @@ public class CreateRoleService implements CreateRoleUseCase {
     public RoleResponse createRole(CreateRoleRequest request) {
 
         if (roleRepository.existsByName(request.getName())) {
-            throw new IllegalArgumentException("Role already exists");
+            throw new ConflictException("Role already exists");
         }
 
         Role role = roleMapper.toDomain(request);

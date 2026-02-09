@@ -1,5 +1,6 @@
 package com.learn.erp_core.user.application.service.permission;
 
+import com.learn.erp_core.shared.exception.ConflictException;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.PermissionMapper;
 import com.learn.erp_core.user.application.dto.permission.CreatePermissionRequest;
 import com.learn.erp_core.user.application.dto.permission.PermissionResponse;
@@ -22,7 +23,7 @@ public class CreatePermissionService implements CreatePermissionUseCase {
     public PermissionResponse createPermission(CreatePermissionRequest request) {
 
         if (permissionRepository.existsByName(request.getName())) {
-            throw new IllegalArgumentException("Name already exists");
+            throw new ConflictException("Name already exists");
         }
 
         Permission permission = permissionMapper.toDomain(request);

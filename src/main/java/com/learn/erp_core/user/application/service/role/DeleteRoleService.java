@@ -1,6 +1,7 @@
 package com.learn.erp_core.user.application.service.role;
 
 
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.application.port.in.role.DeleteRoleUseCase;
 import com.learn.erp_core.user.domain.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class DeleteRoleService implements DeleteRoleUseCase {
     @Override
     public void deleteRole(Long roleId) {
         if (!roleRepository.existsById(roleId)){
-            throw new IllegalArgumentException("Role not found with id : " + roleId);
+            throw new ResourceNotFoundException("Role not found with id : " + roleId);
         }
 
         roleRepository.delete(roleId);

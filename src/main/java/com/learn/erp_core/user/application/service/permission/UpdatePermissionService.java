@@ -1,5 +1,7 @@
 package com.learn.erp_core.user.application.service.permission;
 
+import com.learn.erp_core.shared.exception.ConflictException;
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.PermissionMapper;
 import com.learn.erp_core.user.application.dto.permission.PermissionResponse;
 import com.learn.erp_core.user.application.dto.permission.UpdatePermissionRequest;
@@ -22,10 +24,10 @@ public class UpdatePermissionService implements UpdatePermissionUseCase {
     public PermissionResponse updatePermission(Long permissionId, UpdatePermissionRequest request) {
 
         Permission permission = permissionRepository.findByPermissionId(permissionId)
-                .orElseThrow(() -> new IllegalArgumentException("Permission not found with id : " + permissionId));
+                .orElseThrow(() -> new ResourceNotFoundException("Permission not found with id : " + permissionId));
 
         if (permissionRepository.existsByName(request.getName())) {
-            throw new IllegalArgumentException("Permission already exists with name : " + request.getName());
+            throw new ConflictException("Permission already exists with name : " + request.getName());
         }
 
         Permission savedPermission = permissionRepository.save(permission);

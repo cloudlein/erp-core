@@ -1,5 +1,6 @@
 package com.learn.erp_core.user.application.service.user;
 
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.application.port.in.user.DeleteUserUseCase;
 import com.learn.erp_core.user.domain.model.User;
 import com.learn.erp_core.user.domain.repository.UserRepository;
@@ -17,7 +18,7 @@ public class DeleteUserService implements DeleteUserUseCase {
     @Override
     public void deleteUser(Long userId) {
         if (!userRepository.existsByUserId(userId)){
-            throw new IllegalArgumentException("User not found with id: " + userId);
+            throw new ResourceNotFoundException("User not found with id: " + userId);
         }
         userRepository.delete(userId);
     }

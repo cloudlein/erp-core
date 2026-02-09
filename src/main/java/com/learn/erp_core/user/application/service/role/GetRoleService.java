@@ -2,6 +2,7 @@ package com.learn.erp_core.user.application.service.role;
 
 import com.learn.erp_core.shared.dto.OptionResponse;
 import com.learn.erp_core.shared.dto.PaginationResponse;
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.shared.util.PaginationAssembler;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.RoleMapper;
 import com.learn.erp_core.user.application.dto.role.RoleResponse;
@@ -27,7 +28,7 @@ public class GetRoleService implements GetRoleUseCase {
     public RoleResponse getByRoleId(Long roleId) {
         return roleRepository.findById(roleId)
                 .map(roleMapper::toResponse)
-                .orElseThrow(() -> new IllegalArgumentException("Role not found with id: " + roleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + roleId));
     }
 
     @Override

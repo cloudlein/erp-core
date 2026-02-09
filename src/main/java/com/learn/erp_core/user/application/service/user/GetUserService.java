@@ -1,6 +1,7 @@
 package com.learn.erp_core.user.application.service.user;
 
 import com.learn.erp_core.shared.dto.PaginationResponse;
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.shared.util.PaginationAssembler;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.UserMapper;
 import com.learn.erp_core.user.application.dto.user.UserResponse;
@@ -27,7 +28,7 @@ public class GetUserService implements GetUserUseCase {
     public UserResponse getUserById(Long userId) {
         return userRepository.findByUserId(userId)
                 .map(userMapper::toResponse)
-                .orElseThrow(() -> new IllegalArgumentException("User not found with id : " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id : " + userId));
     }
 
     @Transactional(readOnly = true)

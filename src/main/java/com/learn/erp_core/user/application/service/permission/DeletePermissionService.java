@@ -1,5 +1,6 @@
 package com.learn.erp_core.user.application.service.permission;
 
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.application.port.in.permission.DeletePermissionUseCase;
 import com.learn.erp_core.user.domain.repository.PermissionRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ public class DeletePermissionService implements DeletePermissionUseCase {
     @Override
     public void deletePermission(Long permissionId) {
         if (!permissionRepository.existsByPermissionId(permissionId)) {
-            throw new IllegalArgumentException("Permission not found with id:" + permissionId);
+            throw new ResourceNotFoundException("Permission not found with id:" + permissionId);
         }
 
         permissionRepository.delete(permissionId);

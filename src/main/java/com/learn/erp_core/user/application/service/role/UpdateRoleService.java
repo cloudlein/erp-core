@@ -1,5 +1,7 @@
 package com.learn.erp_core.user.application.service.role;
 
+import com.learn.erp_core.shared.exception.ConflictException;
+import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.adapter.out.persistence.mapper.RoleMapper;
 import com.learn.erp_core.user.application.dto.role.RoleResponse;
 import com.learn.erp_core.user.application.dto.role.UpdateRoleRequest;
@@ -20,16 +22,17 @@ public class UpdateRoleService implements UpdateRoleUseCase {
     public RoleResponse updateRole(Long roleId, UpdateRoleRequest request) {
 
         Role role = roleRepository.findById(roleId)
-                .orElseThrow(() -> new IllegalArgumentException("Role not found with id: " + roleId));
+                .orElseThrow(() -> new ResourceNotFoundException("Role not found with id: " + roleId));
 
         if (request.getName() != null && !request.getName().equals(role.getName())) {
             if (roleRepository.existsByName(request.getName())) {
-                throw new IllegalArgumentException("role already exists");
+                throw new ConflictException("role already exists");
             }
 
             role = role.toBuilder().name(request.getName()).build();
         }
 
-        return null;
+        Role savedRole = roleRepository.save(role);
+        return roleMapper.toResponse(savedRole);
     }
 }

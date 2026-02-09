@@ -45,9 +45,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), null, request.getRequestURI()), HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ApiResponse<Object>> handleNotFoundException(NotFoundException ex, HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Object>> handleNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
         log.warn("Resource not found at {}: {}", request.getRequestURI(), ex.getMessage());
         return new ResponseEntity<>(ApiResponse.error(ex.getMessage(), null, request.getRequestURI()), HttpStatus.NOT_FOUND);
     }
