@@ -2,6 +2,7 @@ package com.learn.erp_core.user.application.service.user;
 
 import com.learn.erp_core.shared.exception.ResourceNotFoundException;
 import com.learn.erp_core.user.domain.repository.UserRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +22,7 @@ class DeleteUserServiceTest {
     private DeleteUserService deleteUserService;
 
     @Test
+    @DisplayName("Should delete user when ID exists")
     void deleteUser_ShouldDeleteUser_WhenIdExists() {
         Long userId = 1L;
         when(userRepository.existsByUserId(userId)).thenReturn(true);
@@ -29,6 +31,7 @@ class DeleteUserServiceTest {
     }
 
     @Test
+    @DisplayName("Should throw ResourceNotFoundException when user does not exist")
     void deleteUser_ShouldThrowResourceNotFound_WhenUserDoesNotExist() {
         Long userId = 99L;
         when(userRepository.existsByUserId(userId)).thenReturn(false);

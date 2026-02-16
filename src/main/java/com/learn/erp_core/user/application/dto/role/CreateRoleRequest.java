@@ -22,5 +22,5 @@ public class CreateRoleRequest {
 
     private String description;
 
-    private Set<String> Permission;
+    private Set<String> permission;
 }
