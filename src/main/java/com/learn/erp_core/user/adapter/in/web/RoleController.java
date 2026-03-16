@@ -33,7 +33,7 @@ public class RoleController {
     @PostMapping
     public ResponseEntity<ApiResponse<RoleResponse>> createRole(@RequestBody @Valid CreateRoleRequest request) {
         RoleResponse roleResponse = createRoleUseCase.createRole(request);
-        return new ResponseEntity<>(ApiResponse.success("Role created successfully", roleResponse), HttpStatus.OK);
+        return new ResponseEntity<>(ApiResponse.success("Role created successfully", roleResponse), HttpStatus.CREATED);
     }
 
     @PutMapping("/{roleId}")
@@ -42,13 +42,13 @@ public class RoleController {
         return new ResponseEntity<>(ApiResponse.success("Role updated successfully", roleResponse), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{roleId}")
     public ResponseEntity<ApiResponse<RoleResponse>> getRoleById(@PathVariable Long roleId) {
         RoleResponse response = getRoleUseCase.getByRoleId(roleId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{roleId}")
     public ResponseEntity<ApiResponse<RoleResponse>> deleteRoleById(@PathVariable Long roleId) {
         deleteRoleUseCase.deleteRole(roleId);
         return ResponseEntity.ok(ApiResponse.success("Role deleted successfully", null));
