@@ -30,30 +30,30 @@ This document contains database table specifications and Java Entity (JPA) mappi
 
 ## Base Entity (MappedSuperclass)
 
-Every table (except `many-to-many` join tables) must have audit columns. In Java, create a `BaseEntity` class extended by other entities.
+Every table (except `many-to-many` join tables) should ideally have audit columns. In Java, we use a `BaseEntity` class as a mapped superclass to hold these fields.
 
-| Column Name  | SQL Type    | Java Type                   | Description           |
-| :----------- | :---------- | :-------------------------- | :-------------------- |
-| `created_at` | TIMESTAMP   | `Instant` / `LocalDateTime` | Creation timestamp    |
-| `updated_at` | TIMESTAMP   | `Instant` / `LocalDateTime` | Last update timestamp |
-| `created_by` | VARCHAR(50) | `String`                    | Username of creator   |
-| `updated_by` | VARCHAR(50) | `String`                    | Username of updater   |
+| Column Name  | SQL Type    | Java Type       | Description                         |
+| :----------- | :---------- | :-------------- | :---------------------------------- |
+| `created_at` | TIMESTAMP   | `LocalDateTime` | Creation timestamp                  |
+| `updated_at` | TIMESTAMP   | `LocalDateTime` | Last update timestamp               |
+| `created_by` | VARCHAR(50) | `String`        | Username of creator (max 50 chars)  |
+| `updated_by` | VARCHAR(50) | `String`        | Username of updater (max 50 chars)  |
 
 ---
 
-## 1. Module: Auth (`com.learn.erp_core.auth`)
+## 1. Module: User (`com.learn.erp_core.user`)
 
 Handles users, roles, and permissions.
 
 ### Table: `users`
 
-| Column          | SQL Type     | Java Type | Constraints  | Note              |
-| :-------------- | :----------- | :-------- | :----------- | :---------------- |
-| `id`            | BIGINT       | `Long`    | PK, Auto Inc |                   |
-| `username`      | VARCHAR(50)  | `String`  | UK, Not Null |                   |
-| `email`         | VARCHAR(100) | `String`  | UK, Not Null |                   |
-| `password_hash` | VARCHAR(255) | `String`  | Not Null     | Store BCrypt hash |
-| `active`        | BOOLEAN      | `Boolean` | Default True | Soft delete flag  |
+| Column          | SQL Type     | Java Type | Constraints  | Note                          |
+| :-------------- | :----------- | :-------- | :----------- | :---------------------------- |
+| `id`            | BIGINT       | `Long`    | PK, Auto Inc |                               |
+| `username`      | VARCHAR(50)  | `String`  | UK, Not Null |                               |
+| `email`         | VARCHAR(100) | `String`  | UK, Not Null |                               |
+| `password_hash` | VARCHAR(255) | `String`  | Not Null     | Store BCrypt hash             |
+| `is_active`     | BOOLEAN      | `Boolean` | Default True | Soft delete flag (`true`/`false`) |
 
 ### Table: `roles`
 
@@ -65,10 +65,11 @@ Handles users, roles, and permissions.
 
 ### Table: `permissions`
 
-| Column | SQL Type     | Java Type | Constraints  | Note                       |
-| :----- | :----------- | :-------- | :----------- | :------------------------- |
-| `id`   | BIGINT       | `Long`    | PK, Auto Inc |                            |
-| `name` | VARCHAR(100) | `String`  | UK, Not Null | PRODUCT_READ, ORDER_CREATE |
+| Column        | SQL Type      | Java Type | Constraints  | Note                                |
+| :------------ | :------------ | :-------- | :----------- | :---------------------------------- |
+| `id`          | BIGINT        | `Long`    | PK, Auto Inc |                                      |
+| `name`        | VARCHAR(100)  | `String`  | UK, Not Null | PRODUCT_READ, ORDER_CREATE           |
+| `description` | VARCHAR(255)  | `String`  |              | Optional permission description text |
 
 ### Relations (Join Tables)
 

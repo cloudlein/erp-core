@@ -38,17 +38,23 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
+	// testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	// testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
+	// testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    // test
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // modulith
     implementation 'org.springframework.modulith:spring-modulith-starter-core'
     implementation 'org.springframework.modulith:spring-modulith-starter-jpa'
     testImplementation 'org.springframework.modulith:spring-modulith-starter-test'
+	testRuntimeOnly 'com.h2database:h2'
 
 
     //dotenv

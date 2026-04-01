@@ -1,0 +1,35 @@
+name: "OWASP Dependency Check"
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  schedule:
+    - cron: '34 16 * * 4'
+
+jobs:
+  scan:
+    name: OWASP Scan
+    runs-on: "ubuntu-latest"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Run OWASP Dependency Check
+      uses: dependency-check/Dependency-Check_Action@main
+      id: check
+      with:
+        project: 'erp-core'
+        path: '.'
+        format: 'HTML'
+        out: 'reports'
+        args: '--failOnCVSS 7 --enableRetired'
+
+    - name: Upload Scan Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: DepCheck Report
+        path: 'reports/dependency-check-report.html'
