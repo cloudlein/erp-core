@@ -19,6 +19,51 @@ This project is designed to be **production-ready**, incorporating advanced patt
 
 ---
 
+## Application Flow
+
+This project follows a Modular Monolith structure where each domain is encapsulated within its own module, following the **Hexagonal Architecture** principles.
+
+```text
+                     ┌───────────────────────┐
+                     │     User / Browser    │
+                     └───────────┬───────────┘
+                                 │
+                 ┌───────────────┴───────────────┐
+                 │             HTTPS             │
+                 ▼                               ▼
+       ┌──────────────────┐            ┌──────────────────┐
+       │ Next.js Frontend │            │  Mobile Client   │
+       └─────────┬────────┘            └─────────┬────────┘
+                 │            HTTPS              │
+                 └───────────────┬───────────────┘
+                                 │
+                     ┌───────────▼───────────┐
+                     │     API Gateway /     │
+                     │    Spring Security    │
+                     └───────────┬───────────┘
+                                 │
+           ┌─────────────────────┼─────────────────────┐
+           │                     │                     │
+           │ /api/auth           │ /api/catalog        │ /api/sales
+           ▼                     ▼                     ▼
+    ┌─────────────┐       ┌─────────────┐       ┌─────────────┐
+    │ Auth Module │       │ Catalog Mod │       │ Sales Mod   │
+    │ (Users/Roles)│       │ (Products)  │       │ (Orders)    │
+    └──────┬──────┘       └──────┬──────┘       └──────┬──────┘
+           │                     │                     │
+           │               ┌─────▼─────┐               │
+           └──────────────►│ Inventory │◄──────────────┘
+                           │ (Stocks)  │
+                           └─────┬─────┘
+                                 │
+                     ┌───────────▼───────────┐
+                     │  PostgreSQL Database  │
+                     │    (ERP Core Dev)     │
+                     └───────────────────────┘
+```
+
+---
+
 ## Technology Stack
 
 *   **Language**: Java 21
