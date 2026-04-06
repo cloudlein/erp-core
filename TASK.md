@@ -9,12 +9,12 @@ This file summarizes the development lifecycle of the Enterprise ERP project. Ta
 Standardization of common utilities and base classes required globally across modules.
 
 - [x] **Infrastructure Configuration**
-  - [x] Initialize `Project Structure` (Verification of directories: `shared`, `auth`, `catalog`, etc.)
-  - [x] Implement `BaseEntity` (MappedSuperclass with audit attributes: `created_at`, `updated_at`, etc.)
-  - [x] Implement `Global Exception Handling` mechanism
-- [/] **Security & Authentication Infrastructure**
-  - [ ] Configure Spring Security with JWT (JSON Web Token)
-  - [ ] Implement `PasswordHashing` service with BCrypt
+  - [x] Initialize `Project Structure` (`src/main/java/com/learn/erp_core/`)
+  - [x] Implement `BaseEntity` (`shared/entity/BaseEntity.java`)
+  - [x] Implement `Global Exception Handling` mechanism (`shared/exception/GlobalExceptionHandler.java`)
+- [x] **Security & Authentication Infrastructure**
+  - [x] Configure Spring Security with JWT (`auth/adapter/out/security/WebSecurityConfig.java`, etc.)
+  - [x] Implement `PasswordHashing` service with BCrypt (`auth/adapter/out/security/BCryptPasswordAdapter.java`)
 
 ---
 
@@ -23,15 +23,16 @@ Standardization of common utilities and base classes required globally across mo
 Development of authentication, authorization, and user profile management.
 
 - [x] **Domain Layer**
-  - [x] Define `User`, `Role`, and `Permission` domain models
-  - [x] Define `UserRepository` port interface
-- [x] **Application Layer**
-  - [x] Implement `RegisterUserUseCase` and `LoginUseCase`
-  - [x] Develop User DTOs (Data Transfer Objects)
-- [x] **Infrastructure Layer**
-  - [x] Implement `UserJpaEntity` persistence mapping
-  - [x] Develop `UserPersistenceAdapter` implementation
-  - [x] Implement `AuthController` REST endpoints
+  - [x] Define `User`, `Role`, and `Permission` domain models (`user/domain/model/`)
+  - [x] Define `UserRepository` port interface (`user/application/port/out/UserRepositoryPort.java`)
+- [/] **Application Layer**
+  - [x] Implement User CRUD Use Cases (`user/application/service/user/CreateUserService.java`, etc.)
+  - [ ] Implement `RegisterUserUseCase` and `LoginUseCase` (`user/application/port/in/`, `user/application/service/`)
+  - [x] Develop User DTOs (`user/application/dto/`)
+- [/] **Infrastructure Layer**
+  - [x] Implement `UserJpaEntity`, `RoleEntity`, and `PermissionEntity` persistence mapping (`user/adapter/out/persistence/entity/`)
+  - [x] Develop `UserPersistenceAdapter` implementation (`user/adapter/out/persistence/repository/user/UserRepositoryImpl.java`)
+  - [/] Implement `AuthController` REST endpoints (`auth/adapter/in/web/AuthController.java`)
 
 ---
 
@@ -39,16 +40,16 @@ Development of authentication, authorization, and user profile management.
 
 Product management and category hierarchical structure development.
 
-- [ ] **Domain Layer**
-  - [ ] Implement `Category` domain model (Hierarchical support)
-  - [ ] Implement `Product` domain model (Including SKU, Pricing, and UOM)
-  - [ ] Define Repository port interfaces
-- [ ] **Application Layer**
-  - [ ] Implement `CategoryService` (Standard Lifecycle)
-  - [ ] Implement `ProductService` (Standard Lifecycle)
-- [ ] **Infrastructure Layer**
-  - [ ] Implement JPA persistence mapping for Category and Product
-  - [ ] Develop `CategoryController` and `ProductController` REST endpoints
+- [ ] **Domain Layer** (`catalog/domain/`)
+  - [ ] Implement `Category` domain model (`catalog/domain/model/Category.java`)
+  - [ ] Implement `Product` domain model (`catalog/domain/model/Product.java`)
+  - [ ] Define Repository port interfaces (`catalog/application/port/out/CategoryRepositoryPort.java`, etc.)
+- [ ] **Application Layer** (`catalog/application/`)
+  - [ ] Implement `CategoryService` (`catalog/application/service/CategoryService.java`)
+  - [ ] Implement `ProductService` (`catalog/application/service/ProductService.java`)
+- [ ] **Infrastructure Layer** (`catalog/adapter/`)
+  - [ ] Implement JPA persistence mapping (`catalog/adapter/out/persistence/entity/`)
+  - [ ] Develop `CategoryController` and `ProductController` REST endpoints (`catalog/adapter/in/web/`)
 
 ---
 
@@ -56,16 +57,16 @@ Product management and category hierarchical structure development.
 
 Warehouse management and stock tracking system.
 
-- [ ] **Domain Layer**
-  - [ ] Define `Warehouse` domain model
-  - [ ] Define `Stock` domain model (Inventory tracking per Product/Warehouse)
-  - [ ] Define `StockMutation` domain model (Audit trail for inventory changes)
-- [ ] **Application Layer**
-  - [ ] Implement `WarehouseService`
-  - [ ] Implement `StockUpdateUseCase` (Handling reservations and physical stock transactions)
-- [ ] **Infrastructure Layer**
-  - [ ] Implement JPA persistence mapping for Warehouse and Stock entities
-  - [ ] Develop `WarehouseController` REST endpoints
+- [ ] **Domain Layer** (`inventory/domain/`)
+  - [ ] Define `Warehouse` domain model (`inventory/domain/model/Warehouse.java`)
+  - [ ] Define `Stock` domain model (`inventory/domain/model/Stock.java`)
+  - [ ] Define `StockMutation` domain model (`inventory/domain/model/StockMutation.java`)
+- [ ] **Application Layer** (`inventory/application/`)
+  - [ ] Implement `WarehouseService` (`inventory/application/service/WarehouseService.java`)
+  - [ ] Implement `StockUpdateUseCase` (`inventory/application/port/in/StockUpdateUseCase.java`)
+- [ ] **Infrastructure Layer** (`inventory/adapter/`)
+  - [ ] Implement JPA persistence mapping (`inventory/adapter/out/persistence/entity/`)
+  - [ ] Develop `WarehouseController` REST endpoints (`inventory/adapter/in/web/WarehouseController.java`)
 
 ---
 
@@ -73,43 +74,43 @@ Warehouse management and stock tracking system.
 
 Management of external entities including Customers and Suppliers.
 
-- [ ] **Domain Layer**
-  - [ ] Define `Partner` domain model (Classification: CUSTOMER, SUPPLIER)
-- [ ] **Application Layer**
-  - [ ] Implement `PartnerService` (Standard Lifecycle)
-- [ ] **Infrastructure Layer**
-  - [ ] Implement `PartnerJpaEntity` persistence mapping
-  - [ ] Develop `PartnerController` REST endpoints
+- [ ] **Domain Layer** (`partner/domain/`)
+  - [ ] Define `Partner` domain model (`partner/domain/model/Partner.java`)
+- [ ] **Application Layer** (`partner/application/`)
+  - [ ] Implement `PartnerService` (`partner/application/service/PartnerService.java`)
+- [ ] **Infrastructure Layer** (`partner/adapter/`)
+  - [ ] Implement `PartnerJpaEntity` persistence mapping (`partner/adapter/out/persistence/entity/PartnerEntity.java`)
+  - [ ] Develop `PartnerController` REST endpoints (`partner/adapter/in/web/PartnerController.java`)
 
 ---
 
-## Phase 5: Sales & Procurement Modules (`com.learn.erp_core.sales`, `procurement`)
+## Phase 5: Sales & Procurement Modules (`com.learn.erp_core.sales`, `com.learn.erp_core.procurement`)
 
 Transaction management for Purchase and Sales orders.
 
-- [ ] **Domain Layer**
-  - [ ] Define `Order` (Sales/Purchase) and `OrderItem` domain models
-  - [ ] Implement state management for Status transitions (DRAFT, CONFIRMED, COMPLETED)
-- [ ] **Application Layer**
-  - [ ] Implement `CreateOrderUseCase`
-  - [ ] Implement `ProcessOrderUseCase` (Integration with Inventory for automated stock deduction)
-- [ ] **Infrastructure Layer**
-  - [ ] Implement Persistence layer for Orders and Items
-  - [ ] Develop Sales and Procurement Controllers REST endpoints
+- [ ] **Domain Layer** (`sales/domain/`, `procurement/domain/`)
+  - [ ] Define `Order` (Sales/Purchase) and `OrderItem` domain models (`sales/domain/model/Order.java`, etc.)
+  - [ ] Implement state management for Status transitions (`sales/domain/model/OrderStatus.java`)
+- [ ] **Application Layer** (`sales/application/`, `procurement/application/`)
+  - [ ] Implement `CreateOrderUseCase` (`sales/application/port/in/CreateOrderUseCase.java`)
+  - [ ] Implement `ProcessOrderUseCase` (`sales/application/port/in/ProcessOrderUseCase.java`)
+- [ ] **Infrastructure Layer** (`sales/adapter/`, `procurement/adapter/`)
+  - [ ] Implement Persistence layer for Orders and Items (`sales/adapter/out/persistence/entity/`)
+  - [ ] Develop Sales and Procurement Controllers REST endpoints (`sales/adapter/in/web/SalesController.java`, etc.)
 
 ---
 
 ## Phase 6: DevOps & Deployment Infrastructure
 
-- [x] Finalize `Dockerfile` and `docker-compose.yml` configurations
+- [x] Finalize `Dockerfile` and `docker-compose.yml` configurations (`Dockerfile`, `docker-compose.yml`)
   - [x] Implement layer caching for faster builds
-  - [x] Configure `.dockerignore` for context optimization
-- [x] Configure `CI/CD` deployment pipelines (GitHub Actions)
-  - [x] Align workflows with optimized Docker process
+  - [x] Configure `.dockerignore` for context optimization (`.dockerignore`)
+- [x] Configure `CI/CD` deployment pipelines (`.github/workflows/`)
+  - [x] Align workflows with optimized Docker process (`.github/workflows/cd-prod.yml`, etc.)
   - [x] Implement GitHub Actions (GHA) build caching
 - [x] Implement `Security & Maintenance Automation`
-  - [x] Configure `Dependabot` for dependency updates
-  - [x] Implement `CodeQL` for static analysis
-  - [x] Implement `OWASP Dependency Check` scanning
-  - [x] Implement `Trivy` vulnerability scanner
-- [x] Implement `Health Check` and monitoring endpoints
+  - [x] Configure `Dependabot` for dependency updates (`.github/dependabot.yml`)
+  - [x] Implement `CodeQL` for static analysis (config in workflows)
+  - [x] Implement `OWASP Dependency Check` scanning (config in workflows)
+  - [x] Implement `Trivy` vulnerability scanner (config in workflows)
+- [x] Implement `Health Check` and monitoring endpoints (`com/learn/erp_core/shared/adapter/in/web/HealthCheckController.java` or Spring Actuator)
