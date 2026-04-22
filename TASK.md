@@ -18,7 +18,7 @@ Standardization of common utilities and base classes required globally across mo
 
 ---
 
-## Phase 1: User & Authentication Module (`com.learn.erp_core.user`)
+## Phase 1: User & Authentication Modules (`user`, `auth`)
 
 Development of authentication, authorization, and user profile management.
 
@@ -27,7 +27,8 @@ Development of authentication, authorization, and user profile management.
   - [x] Define `UserRepository` port interface (`user/application/port/out/UserRepositoryPort.java`)
 - [/] **Application Layer**
   - [x] Implement User CRUD Use Cases (`user/application/service/user/CreateUserService.java`, etc.)
-  - [ ] Implement `RegisterUserUseCase` and `LoginUseCase` (`user/application/port/in/`, `user/application/service/`)
+  - [ ] Implement `RegisterUserUseCase` and `LoginUseCase` (`auth/application/port/in/`, `auth/application/service/`)
+  - [ ] Implement `Refresh Token Rotation` mechanism (`auth/application/service/`)
   - [x] Develop User DTOs (`user/application/dto/`)
 - [/] **Infrastructure Layer**
   - [x] Implement `UserJpaEntity`, `RoleEntity`, and `PermissionEntity` persistence mapping (`user/adapter/out/persistence/entity/`)
