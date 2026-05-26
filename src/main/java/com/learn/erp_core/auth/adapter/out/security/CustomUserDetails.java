@@ -3,7 +3,6 @@ package com.learn.erp_core.auth.adapter.out.security;
 import com.learn.erp_core.user.domain.model.User;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class CustomUserDetailsService implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private final User user;
 

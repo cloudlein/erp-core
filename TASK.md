@@ -24,16 +24,19 @@ Development of authentication, authorization, and user profile management.
 
 - [x] **Domain Layer**
   - [x] Define `User`, `Role`, and `Permission` domain models (`user/domain/model/`)
-  - [x] Define `UserRepository` port interface (`user/application/port/out/UserRepositoryPort.java`)
+  - [x] Define Repository port interfaces (`user/domain/repository/`)
 - [/] **Application Layer**
-  - [x] Implement User CRUD Use Cases (`user/application/service/user/CreateUserService.java`, etc.)
-  - [ ] Implement `RegisterUserUseCase` and `LoginUseCase` (`auth/application/port/in/`, `auth/application/service/`)
+  - [x] Implement User, Role, and Permission CRUD Use Cases (`user/application/service/`)
+  - [/] Implement `RegisterUserUseCase` and `LoginUseCase`
+    - [x] Implement `RegisterUseCase` (`auth/application/service/RegisterService.java`)
+    - [ ] Implement `LoginUseCase` (`auth/application/service/LoginService.java`)
   - [ ] Implement `Refresh Token Rotation` mechanism (`auth/application/service/`)
-  - [x] Develop User DTOs (`user/application/dto/`)
+  - [x] Develop User, Role, and Permission DTOs (`user/application/dto/`)
 - [/] **Infrastructure Layer**
   - [x] Implement `UserJpaEntity`, `RoleEntity`, and `PermissionEntity` persistence mapping (`user/adapter/out/persistence/entity/`)
-  - [x] Develop `UserPersistenceAdapter` implementation (`user/adapter/out/persistence/repository/user/UserRepositoryImpl.java`)
-  - [/] Implement `AuthController` REST endpoints (`auth/adapter/in/web/AuthController.java`)
+  - [x] Develop persistence adapter implementations (`user/adapter/out/persistence/repository/`)
+  - [x] Implement User, Role, and Permission REST endpoints (`user/adapter/in/web/`)
+  - [ ] Implement `AuthController` REST endpoints (`auth/adapter/in/web/AuthController.java`)
 
 ---
 
